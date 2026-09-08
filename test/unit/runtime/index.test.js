@@ -22,5 +22,7 @@ describe("src/runtime aggregate exports", () => {
     assert.equal(typeof runtime.terminateChildTree, "function");
     assert.equal(typeof runtime.terminateProcessTree, "function");
     assert.equal(typeof runtime.decodeProcessOutput, "function");
+    assert.equal(typeof runtime.resolvePnpm, "function");
+    assert.equal(typeof runtime.withPnpmOnPath, "function");
   });
 });

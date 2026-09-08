@@ -10,6 +10,7 @@ const globalDsh = require("./global-dsh");
 const redact = require("./redact");
 const processTree = require("./process-tree");
 const processOutput = require("./process-output");
+const pnpm = require("./pnpm");
 
 module.exports = {
   ...paths,
@@ -20,6 +21,7 @@ module.exports = {
   ...redact,
   ...processTree,
   ...processOutput,
+  ...pnpm,
   protocol,
   upgrade,
   versions,
@@ -27,6 +29,7 @@ module.exports = {
   redact,
   processTree,
   processOutput,
+  pnpm,
   createSupervisor: supervisor.createSupervisor,
   resolveShellDshRoot: paths.resolveShellDshRoot,
   resolveDshBinary: paths.resolveDshBinary,

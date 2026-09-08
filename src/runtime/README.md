@@ -54,6 +54,14 @@ Resolves the `dsh` JS entry and `npm install -g` argv:
 Never uses a staging prefix for the binary itself. The current tray path
 is still `npm install -g`, not `{root}/current`.
 
+## pnpm (`pnpm.js`)
+
+`dsh plugin` forwards to PATH `pnpm` (`shell: true` on Windows). The tray
+resolves `pnpm.cmd` from PATH, the Node directory, `%APPDATA%/npm`, the
+private prefix, or `%LOCALAPPDATA%/pnpm`, then prepends that directory.
+If nothing is found, `ensurePnpm` runs `npm install -g pnpm` into the
+same prefix as DSH.
+
 ## Versions (`dsh-versions.js`)
 
 Pure helpers used by `main.js` when installing or checking updates:

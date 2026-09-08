@@ -23,7 +23,18 @@ function friendlyPluginError(error) {
   if (/Unknown option:\s*'ignore-scripts'/i.test(raw)) {
     return "卸载命令与当前 pnpm 不兼容，已阻止带生命周期脚本的删除。";
   }
-  if (/pnpm failed in profile directory|退出码\s*1[\s\S]*\bpnpm\b/i.test(raw)) {
+  if (
+    /pnpm/i.test(raw)
+    && /不是内部或外部命令|not recognized as an internal or external command|pnpm not found on PATH/i.test(raw)
+  ) {
+    return [
+      "找不到 pnpm，DSH 安装插件需要它。",
+      "壳会在启动时尝试自动安装。若仍然失败，请执行 npm install -g pnpm，或从带 pnpm 的终端启动托盘。",
+      "",
+      raw,
+    ].join("\n");
+  }
+  if (/pnpm failed in profile directory/i.test(raw)) {
     return [
       "隔离环境里的 pnpm 安装失败，正式插件环境未改动。",
       "常见原因：隔离目录没有本地缓存、网络不可用，或当前 DSH 与插件 / lockfile 不兼容。",

@@ -6,6 +6,7 @@ const runtime = require("./src/runtime");
 const globalDsh = require("./src/runtime/global-dsh");
 const { terminateChildTree } = require("./src/runtime/process-tree");
 const { decodeProcessOutput } = require("./src/runtime/process-output");
+const { PNPM_SPEC, resolvePnpm, withPnpmOnPath } = require("./src/runtime/pnpm");
 const {
   normalizeVersion,
   pickDshCandidates,
@@ -454,6 +455,17 @@ async function ensurePortableNode() {
   if (!resolveNpmCli()) throw new Error("便携 Node 解压后仍找不到 npm。");
 }
 
+function resolvePnpmForRuntime() {
+  const picked = pickRuntime();
+  return resolvePnpm({
+    nodeDir: picked.node ? dirname(picked.node) : undefined,
+    appData: process.env.APPDATA || "",
+    localAppData: process.env.LOCALAPPDATA || "",
+    prefix: picked.isolated ? npmPrefix() : undefined,
+    pathEnv: process.env.Path || process.env.PATH || "",
+  });
+}
+
 function spawnEnv() {
   const env = { ...process.env };
   if (process.platform === "win32" && (!env.DSH_PERMISSION_MODE || env.DSH_PERMISSION_MODE === "")) {
@@ -478,7 +490,13 @@ function spawnEnv() {
   env.npm_config_fetch_retries = env.npm_config_fetch_retries || "3";
   env.npm_config_audit = "false";
   env.npm_config_fund = "false";
-  return env;
+  return withPnpmOnPath(env, resolvePnpm({
+    nodeDir: runtime.node ? dirname(runtime.node) : undefined,
+    appData: process.env.APPDATA || "",
+    localAppData: process.env.LOCALAPPDATA || "",
+    prefix: runtime.isolated ? npmPrefix() : undefined,
+    pathEnv: env.PATH,
+  }));
 }
 
 function spawnHidden(command, args, extra = {}) {
@@ -1175,6 +1193,34 @@ async function installNewestUsableDsh(npm, { onProgress, startFrom, exact = fals
   throw new Error(`无法安装可用的 DSH。\n${tried}${lastError instanceof Error ? lastError.message : String(lastError || "")}`.trim());
 }
 
+async function installPnpm() {
+  const npm = resolveNpmCli();
+  if (!npm) throw new Error("找不到 npm，无法自动安装 pnpm。");
+  const args = globalDsh.buildGlobalInstallArgs(npm.cli, PNPM_SPEC, NPM_INSTALL_FLAGS);
+  const opts = { timeoutMs: 10 * 60 * 1000 };
+  try {
+    return await runCaptured(npm.node, args, opts);
+  } catch (error) {
+    if (!isTransientNpmError(error)) throw error;
+    return runCaptured(npm.node, args, opts);
+  }
+}
+
+async function ensurePnpm() {
+  if (resolvePnpmForRuntime()) return;
+  setSplash("正在安装 pnpm…", "DSH 安装插件需要 pnpm。");
+  try {
+    await installPnpm();
+  } catch (error) {
+    throw new Error(
+      `找不到 pnpm，DSH 安装插件需要它。自动安装失败：${error instanceof Error ? error.message : String(error)}`,
+    );
+  }
+  if (!resolvePnpmForRuntime()) {
+    throw new Error("找不到 pnpm，DSH 安装插件需要它。请执行 npm install -g pnpm，或从带 pnpm 的终端启动托盘。");
+  }
+}
+
 async function ensureRuntime() {
   await ensurePortableNode();
   if (!resolveNode()) {
@@ -1185,6 +1231,7 @@ async function ensureRuntime() {
   }
   if (resolveDshEntry()) {
     cleanupLegacyShellDshInstall();
+    await ensurePnpm();
     return;
   }
   const npm = resolveNpmCli();
@@ -1206,6 +1253,7 @@ async function ensureRuntime() {
       }
     },
   });
+  await ensurePnpm();
 }
 
 async function maybeDailyUpdateCheck() {
@@ -1459,6 +1507,7 @@ async function runPluginCli(home, args, { untrusted = false } = {}) {
   const node = portableNodeBinary();
   const entry = resolveDshEntry();
   if (!node || !entry) throw new Error("DSH 未就绪，无法管理插件");
+  await ensurePnpm();
   return runCaptured(node, [entry, "plugin", "--profile", "web", ...args], {
     timeoutMs: 10 * 60 * 1000,
     env: { ...pluginCliEnv(untrusted ? untrustedPluginEnv() : spawnEnv(), { untrusted }), DSH_HOME: home },

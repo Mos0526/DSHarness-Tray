@@ -7,7 +7,7 @@
 | 区域 | 托盘是否调用 | 说明 |
 | --- | --- | --- |
 | `main.js` | 入口 | Electron 主进程 |
-| `src/runtime` 监督器 / 路径 / `global-dsh` / `redact` | 是 | 启动、npm 入口、诊断脱敏 |
+| `src/runtime` 监督器 / 路径 / `global-dsh` / `pnpm` / `redact` | 是 | 启动、npm 入口、pnpm PATH、诊断脱敏 |
 | `src/adapters` | 是 | 经 `runtime.protocol` |
 | `src/homes` | 是 | `ensureHomes`、ledger、listInstalled |
 | `src/install` 门禁 / WAL / receipt / compat | 是 | 安装编排直接调用 |
@@ -52,6 +52,7 @@
 | `process-tree.js` | Windows `taskkill /T` 杀进程树，供监督器 stop 使用 |
 | `process-output.js` | 子进程输出 UTF-8 / GBK 解码，避免插件错误变成乱码 |
 | `global-dsh.js` | 全局 / 私有 prefix 的 dsh 入口与 `npm install -g` 参数 |
+| `pnpm.js` | 解析 pnpm 垫片并把目录插入 PATH；缺失时由托盘 `npm install -g pnpm` |
 | `dsh-versions.js` | npm / GitHub 版本候选、Atom 发行说明、更新摘要 |
 | `redact.js` | 诊断文本脱敏：token、密钥、用户主目录 |
 
@@ -176,6 +177,7 @@
 | `runtime/dsh-supervisor.test.js` | 崩溃隔离、safe 注入、状态机、进程树 stop |
 | `runtime/process-tree.test.js` | Windows `taskkill /T` |
 | `runtime/process-output.test.js` | UTF-8 / GBK 解码 |
+| `runtime/pnpm.test.js` | 垫片搜索顺序与 PATH 插入 |
 | `runtime/global-dsh.test.js` | 全局入口与 `npm install -g` |
 | `runtime/dsh-versions.test.js` | 版本候选、Atom 匹配、更新摘要 |
 | `runtime/redact.test.js` | 诊断脱敏 |

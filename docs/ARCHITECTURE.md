@@ -97,7 +97,7 @@ Safe profile 只保留官方 bundle：`@deepseek-ai/dsh-base`、`@deepseek-ai/ds
 
 ## 5. 插件安装管线
 
-生产路径在 `main.js` 的 `performCatalogPluginInstall` / `Uninstall`，门禁与 WAL 在 `src/install`，操作辅助在 `src/plugin-center/operations.js`。
+生产路径在 `main.js` 的 `performCatalogPluginInstall` / `Uninstall`，门禁与 WAL 在 `src/install`，操作辅助在 `src/plugin-center/operations.js`。启动和 `dsh plugin` 会先解析或 `npm install -g pnpm`，再把垫片目录插到 PATH（`src/runtime/pnpm.js`）。
 
 ```mermaid
 sequenceDiagram

@@ -41,6 +41,7 @@ Windows 托盘应用。它**不实现** DeepSeek Harness 本体，而是：
 - 系统托盘常驻；单击打开窗口，单实例运行
 - 托盘「设置」：开机自启动、允许锁屏运行
 - 自动准备 Node.js（系统 Node ≥ 20，或安装包内的便携 Node）
+- 启动时查找或自动安装 pnpm（`dsh plugin` 依赖它），并把垫片目录插到 PATH
 - 首次启动自动 `npm install -g @deepseek-ai/dsh`；缺依赖的预发布会跳过
 - 每天检查一次 DSH 更新（托盘「关于与更新」可手动检查）
 - DSH 子进程崩溃时托盘不退出，自动切到无社区插件的安全模式
@@ -58,7 +59,8 @@ Windows 托盘应用。它**不实现** DeepSeek Harness 本体，而是：
 | --- | --- |
 | 系统 | Windows 10 及以上（打包解压便携 Node 需要系统 `tar.exe`） |
 | Node | 开发需要 Node.js 20+；安装包可自带便携 Node 24 |
-| 网络 | 安装 DSH、刷新插件目录、拉取 npm / GitHub 信号时需要 |
+| pnpm | 不必预装。启动时按 PATH / Node 目录 / npm 全局 / 私有 prefix / `%LOCALAPPDATA%\pnpm` 查找，找不到就 `npm install -g pnpm` |
+| 网络 | 安装 DSH、pnpm、刷新插件目录、拉取 npm / GitHub 信号时需要 |
 
 ## 快速开始
 
@@ -152,6 +154,7 @@ node make-ico.js
 **当前托盘接线：**
 
 - DSH **二进制**通过 `npm install -g @deepseek-ai/dsh` 安装。有系统 Node 时写入 `%APPDATA%\npm`；只有便携 Node 时写入壳的私有 npm prefix。
+- **pnpm** 装在同一 prefix（或沿用已有的 PATH / `%LOCALAPPDATA%\pnpm`），再把该目录插到子进程 PATH。`dsh plugin` 在 Windows 上走 `shell: true`，必须能直接叫到 `pnpm.cmd`。
 - 正式 **active home** 是用户目录下的 `~/.dsh`（`%USERPROFILE%\.dsh`），与终端里直接跑 `dsh` 共用同一份配置和 profile。
 - 凭证与设置（`.credentials.yaml`、`settings.yaml`、`pet.json`）在切到安全模式时会同步到 `homes/safe`。
 - 社区插件仍先在 `homes/staging` 验证，通过后再写入 `~/.dsh/profiles/web`。
@@ -166,7 +169,7 @@ node make-ico.js
 2. 向 npm registry 取 **精确版本 + integrity + manifest**
 3. `assertInstallGate`：禁止浮动 git spec、市场类插件、生命周期脚本；核对仓库身份；相对上次 receipt 检测供应链变更
 4. 检查与当前 DSH 的 host / renderer 兼容范围
-5. 把 active profile 拷到 staging（不含 `node_modules`），在隔离 home 里 `dsh plugin add --save-exact --ignore-scripts`
+5. 确认 pnpm 可用后，把 active profile 拷到 staging（不含 `node_modules`），在隔离 home 里 `dsh plugin add --save-exact --ignore-scripts`
 6. 启动隔离 DSH，做 host / renderer 探活
 7. 通过后才写入正式 profile，记 WAL 与 receipt；失败则回滚或切安全模式
 
@@ -185,7 +188,7 @@ dialog.html             「关于 / 更新 / 确认」主题对话框
 preload-dialog.js
 src/
   adapters/             DSH CLI argv / stdout / 退出码，不绑死某一预览版
-  runtime/              路径、监督器、进程树、输出解码、版本候选、诊断脱敏
+  runtime/              路径、监督器、进程树、输出解码、pnpm 解析、版本候选、诊断脱敏
   dsh-upgrade/          单目录事务升级库（测试覆盖；当前托盘未接线）
   homes/                DSH_HOME 四种隔离、ledger 路径、profile 清单
   install/              门禁、WAL、receipt、兼容性、安装管线
@@ -222,7 +225,7 @@ docs/                   架构与有效代码清单
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | 进程模型、启动、Home、安装管线、目录、故障恢复 |
 | [docs/MODULES.md](docs/MODULES.md) | 有效源码与测试对照表 |
 | [src/adapters/README.md](src/adapters/README.md) | DSH 协议适配 |
-| [src/runtime/README.md](src/runtime/README.md) | 路径、监督器、进程树、输出解码、诊断脱敏 |
+| [src/runtime/README.md](src/runtime/README.md) | 路径、监督器、进程树、输出解码、pnpm、诊断脱敏 |
 | [src/dsh-upgrade/README.md](src/dsh-upgrade/README.md) | 事务升级库 |
 | [src/homes/README.md](src/homes/README.md) | Home 与 ledger |
 | [src/install/README.md](src/install/README.md) | 安装门禁与 WAL |
@@ -242,6 +245,7 @@ docs/                   架构与有效代码清单
 | 启动页停在「正在准备 Node / 安装 DSH」 | 检查网络；预发布缺依赖时会自动跳过并试下一个版本 |
 | 窗口能开、页面是错误页 | 看启动终端日志；托盘仍在，可「退出」后重开 |
 | 插件安装失败、正式环境未变 | 预期行为：staging 验证失败不会写入 `~/.dsh` |
+| 插件安装提示找不到 pnpm | 壳会在启动和安装前自动 `npm install -g pnpm`。仍失败则手动执行该命令，或从已有 pnpm 的终端再开托盘 |
 | DSH 崩溃后功能变少 | 已切到安全模式（无社区插件）；修好后可在插件中心重新安装 |
 | 启动后提示「已进入安全模式」 | 正常模式里的社区插件和当前 DSH 不兼容，已自动停用社区插件；对话框里的路径和 token 已经脱敏 |
 | 锁屏后任务停住 | 托盘 → 设置 → 打开「允许锁屏运行」 |

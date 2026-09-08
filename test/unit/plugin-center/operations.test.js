@@ -225,10 +225,20 @@ describe("plugin operation adversarial guard", () => {
 
   it("explains a staging pnpm profile failure without claiming the live home changed", () => {
     const text = friendlyPluginError(new Error(
-      "退出码 1\n'pnpm'\ndsh: pnpm failed in profile directory C:\\Users\\[user]\\AppData\\Roaming\\dsh-tray\\dsh\\homes\\staging\\profiles\\web",
+      "退出码 1\nERR_PNPM_PEER_DEP\ndsh: pnpm failed in profile directory C:\\Users\\[user]\\AppData\\Roaming\\dsh-tray\\dsh\\homes\\staging\\profiles\\web",
     ));
     assert.match(text, /隔离环境/);
     assert.match(text, /正式插件环境未改动/);
     assert.match(text, /staging\\profiles\\web/);
+    assert.doesNotMatch(text, /找不到 pnpm/);
+  });
+
+  it("maps cmd 'pnpm is not recognized' to a missing-pnpm message", () => {
+    const text = friendlyPluginError(new Error(
+      "退出码 1\n'pnpm' 不是内部或外部命令，也不是可运行的程序或批处理文件。\ndsh: pnpm failed in profile directory C:\\Users\\[user]\\AppData\\Roaming\\dsh-tray\\dsh\\homes\\staging\\profiles\\web",
+    ));
+    assert.match(text, /找不到 pnpm/);
+    assert.match(text, /DSH 安装插件需要它/);
+    assert.doesNotMatch(text, /lockfile 不兼容/);
   });
 });
