@@ -1,0 +1,10 @@
+{
+  "id": 999001,
+  "name": "old-plugin",
+  "full_name": "example/old-plugin",
+  "html_url": "https://github.com/example/old-plugin",
+  "stargazers_count": 3,
+  "archived": true,
+  "pushed_at": "2024-01-01T00:00:00Z",
+  "owner": { "login": "example" }
+}

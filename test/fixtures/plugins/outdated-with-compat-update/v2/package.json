@@ -1,0 +1,23 @@
+{
+  "name": "dsh-fixture-outdated",
+  "version": "2.0.0",
+  "description": "Compatible newer version of the outdated fixture plugin",
+  "main": "index.js",
+  "dsh": {
+    "bundle": {
+      "id": "fixture.outdated",
+      "patch": true
+    },
+    "compat": {
+      "host": ">=0.8.0",
+      "renderer": ">=0.8.0"
+    }
+  },
+  "dshFixture": {
+    "id": "fixture.outdated",
+    "kind": "compat-update",
+    "compat": { "host": true, "renderer": true },
+    "replaces": "1.0.0",
+    "dsh": ">=0.8.0"
+  }
+}

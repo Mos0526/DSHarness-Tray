@@ -1,0 +1,15 @@
+{
+  "id": 1333136466,
+  "node_id": "R_kgDOT3YMUg",
+  "name": "dsh-spotlight",
+  "full_name": "0xsline/dsh-spotlight",
+  "html_url": "https://github.com/0xsline/dsh-spotlight",
+  "description": "Keyboard-first command palette for DeepSeek Harness Web",
+  "stargazers_count": 10,
+  "archived": false,
+  "disabled": false,
+  "pushed_at": "2026-08-14T10:40:39Z",
+  "updated_at": "2026-08-23T03:23:22Z",
+  "created_at": "2026-08-13T13:16:27Z",
+  "owner": { "login": "0xsline", "id": 151105947 }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "dsh-fixture-host-incompatible",
+  "version": "1.0.0",
+  "description": "Host crashes when this plugin is loaded",
+  "main": "index.js",
+  "dsh": {
+    "bundle": {
+      "id": "fixture.host-incompatible",
+      "patch": true
+    },
+    "compat": {
+      "host": ">=99.0.0",
+      "renderer": ">=0.1.0"
+    }
+  },
+  "dshFixture": {
+    "id": "fixture.host-incompatible",
+    "kind": "host-incompatible",
+    "compat": { "host": false, "renderer": true },
+    "dsh": ">=0.1.0"
+  }
+}

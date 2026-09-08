@@ -1,0 +1,148 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>DS harness</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: Canvas;
+      --fg: CanvasText;
+      --muted: color-mix(in srgb, CanvasText 64%, Canvas);
+      --line: color-mix(in srgb, CanvasText 14%, Canvas);
+      --btn: color-mix(in srgb, CanvasText 10%, Canvas);
+      --btn-hover: color-mix(in srgb, CanvasText 16%, Canvas);
+      --accent: #4f8cff;
+      --accent-fg: #fff;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #202020;
+        --fg: #f3f3f3;
+        --muted: #b8b8b8;
+        --line: #3a3a3a;
+        --btn: #2d2d2d;
+        --btn-hover: #3a3a3a;
+        --accent: #4f8cff;
+        --accent-fg: #fff;
+      }
+    }
+    html, body {
+      margin: 0;
+      height: 100%;
+      background: var(--bg);
+      color: var(--fg);
+      font: 14px/1.5 "Segoe UI", system-ui, sans-serif;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      padding: 18px 20px 10px;
+    }
+    h1 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .message {
+      margin: 6px 0 0;
+      color: var(--muted);
+      white-space: pre-wrap;
+    }
+    .notes {
+      flex: 1;
+      overflow: auto;
+      margin: 0 20px 12px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: color-mix(in srgb, CanvasText 4%, Canvas);
+      color: var(--fg);
+      white-space: pre-wrap;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .notes:empty { display: none; }
+    footer {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      padding: 12px 20px 16px;
+      border-top: 1px solid var(--line);
+    }
+    .shell-version {
+      margin-right: auto;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.2;
+    }
+    .shell-version:empty { display: none; }
+    button {
+      appearance: none;
+      border: 0;
+      border-radius: 8px;
+      padding: 7px 14px;
+      font: inherit;
+      cursor: pointer;
+      background: var(--btn);
+      color: var(--fg);
+    }
+    button:hover { background: var(--btn-hover); }
+    button.primary {
+      background: var(--accent);
+      color: var(--accent-fg);
+    }
+    button:disabled,
+    button.primary:disabled {
+      opacity: 0.55;
+      cursor: default;
+    }
+    button:disabled:hover,
+    button.primary:disabled:hover {
+      background: var(--btn);
+    }
+    button.primary:disabled:hover {
+      background: var(--accent);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 id="title"></h1>
+    <p class="message" id="message"></p>
+  </header>
+  <pre class="notes" id="notes"></pre>
+  <footer id="buttons"></footer>
+  <script>
+    function render(data) {
+      document.title = data.title || "DS harness";
+      document.getElementById("title").textContent = data.title || "";
+      document.getElementById("message").textContent = [data.message, data.detail].filter(Boolean).join("\n\n");
+      const notes = document.getElementById("notes");
+      notes.textContent = data.notes || "";
+      notes.hidden = !data.notes;
+      const footer = document.getElementById("buttons");
+      footer.replaceChildren();
+      const shellVersion = document.createElement("span");
+      shellVersion.className = "shell-version";
+      shellVersion.textContent = data.shellVersion || "";
+      footer.append(shellVersion);
+      const buttons = data.buttons && data.buttons.length ? data.buttons : ["确定"];
+      buttons.forEach((item, index) => {
+        const button = document.createElement("button");
+        const isObject = item && typeof item === "object";
+        const id = isObject ? item.id : String(index);
+        button.textContent = isObject ? item.label : item;
+        if (isObject ? item.primary : index === buttons.length - 1) button.className = "primary";
+        button.disabled = Boolean(isObject && item.disabled);
+        button.addEventListener("click", () => window.dshDialog.choose(id));
+        footer.append(button);
+      });
+    }
+    window.dshDialog.onData(render);
+  </script>
+</body>
+</html>

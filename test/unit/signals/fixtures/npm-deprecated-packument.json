@@ -1,0 +1,23 @@
+{
+  "name": "old-plugin",
+  "dist-tags": { "latest": "0.1.0" },
+  "time": {
+    "0.1.0": "2024-01-01T00:00:00.000Z",
+    "modified": "2024-01-02T00:00:00.000Z"
+  },
+  "versions": {
+    "0.1.0": {
+      "name": "old-plugin",
+      "version": "0.1.0",
+      "deprecated": "this package is no longer maintained",
+      "dist": {
+        "integrity": "sha512-deprecatedIntegrityValue0123456789ABCDEF==",
+        "tarball": "https://registry.npmjs.org/old-plugin/-/old-plugin-0.1.0.tgz"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/example/old-plugin.git"
+      }
+    }
+  }
+}

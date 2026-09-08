@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self'; img-src 'self' data:; connect-src 'none'" />
+  <title>插件</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="top">
+      <div class="top-copy">
+        <h1>插件</h1>
+        <p class="lede">已安装、待升级与隔离都在这里处理。托盘只保留这一个入口。</p>
+      </div>
+      <div class="top-actions">
+        <button type="button" class="btn" id="favorite-history" title="查看收藏历史">收藏历史</button>
+        <button type="button" class="btn" id="refresh" title="刷新列表">刷新</button>
+      </div>
+    </header>
+
+    <div class="banner" id="banner" hidden></div>
+
+    <nav class="filters" id="filters" aria-label="筛选"></nav>
+
+    <div class="search-block">
+      <label class="search-wrap">
+        <span class="visually-hidden">搜索插件</span>
+        <input type="search" id="search" placeholder="搜索名称、说明或分类" autocomplete="off" />
+      </label>
+      <nav class="facets" id="facets" aria-label="分类快捷"></nav>
+    </div>
+
+    <div class="workspace">
+      <section class="list-pane" id="list-pane" aria-label="插件列表">
+        <div class="list-sizer" id="list-sizer">
+          <ul class="cards" id="list"></ul>
+        </div>
+        <p class="empty" id="empty" hidden>没有符合条件的插件。</p>
+      </section>
+
+      <section class="detail-pane" id="detail" aria-live="polite">
+        <div class="detail-empty">
+          <p>选择左侧插件，查看更详细的说明、社区热度、维护与供应链。</p>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="modal" id="confirm" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+      <h2 id="confirm-title">确认卸载</h2>
+      <p id="confirm-body"></p>
+      <footer>
+        <button type="button" class="btn" id="confirm-cancel">取消</button>
+        <button type="button" class="btn danger" id="confirm-ok">卸载</button>
+      </footer>
+    </div>
+  </div>
+
+  <div class="modal" id="history" hidden>
+    <div class="modal-card history-card" role="dialog" aria-modal="true" aria-labelledby="history-title">
+      <h2 id="history-title">收藏历史</h2>
+      <ol class="history-list" id="history-list"></ol>
+      <p class="history-empty" id="history-empty" hidden>还没有收藏记录。</p>
+      <footer>
+        <button type="button" class="btn" id="history-close">关闭</button>
+      </footer>
+    </div>
+  </div>
+
+  <script src="list-scroll.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

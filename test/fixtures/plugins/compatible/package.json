@@ -1,0 +1,22 @@
+{
+  "name": "dsh-fixture-compatible",
+  "version": "1.0.0",
+  "description": "Host and Renderer compatible test plugin",
+  "main": "index.js",
+  "dsh": {
+    "bundle": {
+      "id": "fixture.compatible",
+      "patch": true
+    },
+    "compat": {
+      "host": ">=0.1.0",
+      "renderer": ">=0.1.0"
+    }
+  },
+  "dshFixture": {
+    "id": "fixture.compatible",
+    "kind": "compatible",
+    "compat": { "host": true, "renderer": true },
+    "dsh": ">=0.1.0"
+  }
+}

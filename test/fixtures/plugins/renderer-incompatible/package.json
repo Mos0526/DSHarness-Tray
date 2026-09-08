@@ -1,0 +1,22 @@
+{
+  "name": "dsh-fixture-renderer-incompatible",
+  "version": "1.0.0",
+  "description": "Renderer settle fails for this plugin",
+  "main": "index.js",
+  "dsh": {
+    "bundle": {
+      "id": "fixture.renderer-incompatible",
+      "patch": true
+    },
+    "compat": {
+      "host": ">=0.1.0",
+      "renderer": ">=99.0.0"
+    }
+  },
+  "dshFixture": {
+    "id": "fixture.renderer-incompatible",
+    "kind": "renderer-incompatible",
+    "compat": { "host": true, "renderer": false },
+    "dsh": ">=0.1.0"
+  }
+}

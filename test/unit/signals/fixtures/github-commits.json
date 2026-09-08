@@ -1,0 +1,10 @@
+[
+  {
+    "sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "commit": {
+      "author": { "name": "dev", "date": "2026-08-14T09:00:00Z" },
+      "committer": { "name": "dev", "date": "2026-08-14T10:40:39Z" },
+      "message": "fix palette focus"
+    }
+  }
+]

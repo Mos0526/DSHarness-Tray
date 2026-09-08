@@ -1,0 +1,81 @@
+{
+  "name": "dsh-tray",
+  "version": "1.1.15",
+  "private": true,
+  "description": "Windows 托盘壳：托管本地 DeepSeek Harness（dsh）Web GUI，并提供插件中心、目录与隔离安装",
+  "author": "Mos0526",
+  "license": "MIT",
+  "homepage": "https://github.com/Mos0526/DSHarness-Tray#readme",
+  "bugs": {
+    "url": "https://github.com/Mos0526/DSHarness-Tray/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mos0526/DSHarness-Tray.git"
+  },
+  "main": "main.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "electron .",
+    "test": "node scripts/run-tests.js",
+    "prepare-node": "node scripts/prepare-node.js",
+    "dist": "node scripts/prepare-node.js && electron-builder --win"
+  },
+  "devDependencies": {
+    "electron": "^37.2.6",
+    "electron-builder": "^26.0.12",
+    "png-to-ico": "^3.0.2"
+  },
+  "build": {
+    "appId": "local.dsh.tray",
+    "productName": "DS harness",
+    "artifactName": "DS-harness-Setup-${version}.${ext}",
+    "compression": "maximum",
+    "electronLanguages": ["en-US", "zh-CN"],
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "main.js",
+      "preload-dialog.js",
+      "dialog.html",
+      "icon.png",
+      "icon-16.png",
+      "icon-32.png",
+      "icon-48.png",
+      "icon-256.png",
+      "tray-icon.png",
+      "icon.ico",
+      "dsh-app.ico",
+      "src/**"
+    ],
+    "extraResources": [
+      {
+        "from": "runtime/node",
+        "to": "node",
+        "filter": ["**/*"]
+      }
+    ],
+    "win": {
+      "icon": "dsh-app.ico",
+      "executableName": "DSH",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "shortcutName": "DS harness",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "installerIcon": "dsh-app.ico",
+      "uninstallerIcon": "dsh-app.ico"
+    }
+  }
+}

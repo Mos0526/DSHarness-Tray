@@ -1,0 +1,14 @@
+node_modules/
+release/
+/runtime/
+*.atom.xml
+Thumbs.db
+Desktop.ini
+.DS_Store
+*.log
+.env
+.env.*
+*.pem
+*.p12
+*.pfx
+credentials.json

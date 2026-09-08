@@ -1,0 +1,28 @@
+{
+  "name": "dsh-spotlight",
+  "dist-tags": { "latest": "1.2.3" },
+  "time": {
+    "created": "2026-08-13T13:16:27.000Z",
+    "modified": "2026-08-14T10:41:00.000Z",
+    "1.2.3": "2026-08-14T10:41:00.000Z"
+  },
+  "versions": {
+    "1.2.3": {
+      "name": "dsh-spotlight",
+      "version": "1.2.3",
+      "dist": {
+        "integrity": "sha512-abcdefghijklmnopqrstuvwxyz0123456789+/ABCDEF=",
+        "tarball": "https://registry.npmjs.org/dsh-spotlight/-/dsh-spotlight-1.2.3.tgz",
+        "shasum": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "repository": {
+        "type": "git",
+        "url": "git+https://github.com/0xsline/dsh-spotlight.git"
+      }
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/0xsline/dsh-spotlight.git"
+  }
+}
