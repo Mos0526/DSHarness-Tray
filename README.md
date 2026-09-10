@@ -33,7 +33,6 @@ Windows 托盘应用。它**不实现** DeepSeek Harness 本体，而是：
 - [文档](#文档)
 - [故障排查](#故障排查)
 - [安全边界](#安全边界)
-- [源码与诊断脱敏](#源码与诊断脱敏)
 - [许可证](#许可证)
 
 ## 功能
@@ -258,21 +257,6 @@ docs/                   架构与有效代码清单
 壳能保证：安装前校验 npm integrity 与仓库身份；社区插件 `--ignore-scripts`；先隔离运行再进入 `~/.dsh`；渲染进程不能乱开链接或复制任意剪贴板。
 
 壳不能保证：插件一旦进入 active，就拥有该 home 下 Host 的能力；Windows 上默认 `danger-full-access`，与官方 GUI 权限模型一致，不是沙箱。细节见 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) 第 9 节。
-
-## 源码与诊断脱敏
-
-本仓库按可公开源码整理，不含本机路径、账号或密钥：
-
-| 项 | 做法 |
-| --- | --- |
-| 作者 | `package.json` / `LICENSE` / git 作者只用公开身份 `Mos0526`，邮箱 `Mos0526@users.noreply.github.com` |
-| 忽略 | `.env`、`*.pem`、`credentials.json`、`release/`、便携 `runtime/` |
-| 运行时 | `src/runtime/redact.js` 抹掉 URL token、`Authorization`、`sk-` / `ghp_` / `npm_`、`API_KEY=`、`C:\Users\<name>` |
-| 插件环境 | 隔离安装时去掉 `API_KEY` / `TOKEN` / `SECRET` / `PASSWORD` |
-| 目录请求 | 不附带 GitHub token；列表默认只用 `pushed_at`，不按行打 commits |
-| git 历史 | 已重写：作者与提交邮箱只用公开身份 `Mos0526` |
-
-测试夹具里的 `alice`、`top-secret` 等是虚构值，用来断言脱敏生效。
 
 ## 许可证
 
