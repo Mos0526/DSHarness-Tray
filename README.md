@@ -22,6 +22,7 @@ Windows 托盘应用。它**不实现** DeepSeek Harness 本体，而是：
 
 ## 目录
 
+- [界面](#界面)
 - [功能](#功能)
 - [环境](#环境)
 - [快速开始](#快速开始)
@@ -36,6 +37,24 @@ Windows 托盘应用。它**不实现** DeepSeek Harness 本体，而是：
 - [故障排查](#故障排查)
 - [安全边界](#安全边界)
 - [许可证](#许可证)
+
+## 界面
+
+主窗口（嵌入的 DSH Web GUI）：
+
+![主窗口](docs/screenshots/window.png)
+
+托盘菜单：
+
+<img src="docs/screenshots/tray-menu.png" alt="托盘菜单" width="280">
+
+关于与更新：
+
+![关于与更新](docs/screenshots/about.png)
+
+插件中心：
+
+![插件中心](docs/screenshots/plugin-center.png)
 
 ## 功能
 

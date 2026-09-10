@@ -22,6 +22,7 @@ This repo is the Electron shell source. It is **not** published to npm. DSH itse
 
 ## Contents
 
+- [Screenshots](#screenshots)
 - [Features](#features)
 - [Requirements](#requirements)
 - [Quick start](#quick-start)
@@ -36,6 +37,24 @@ This repo is the Electron shell source. It is **not** published to npm. DSH itse
 - [Troubleshooting](#troubleshooting)
 - [Safety boundary](#safety-boundary)
 - [License](#license)
+
+## Screenshots
+
+Main window (embedded DSH Web GUI):
+
+![Main window](docs/screenshots/window.png)
+
+Tray menu:
+
+<img src="docs/screenshots/tray-menu.png" alt="Tray menu" width="280">
+
+About and updates:
+
+![About and updates](docs/screenshots/about.png)
+
+Plugin center:
+
+![Plugin center](docs/screenshots/plugin-center.png)
 
 ## Features
 
