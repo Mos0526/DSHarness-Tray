@@ -1,5 +1,7 @@
 # DS harness（dsh-tray）
 
+**中文** | [English](README.en.md)
+
 [![test](https://github.com/Mos0526/DSHarness-Tray/actions/workflows/test.yml/badge.svg)](https://github.com/Mos0526/DSHarness-Tray/actions/workflows/test.yml)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
@@ -221,6 +223,7 @@ docs/                   架构与有效代码清单
 
 | 文档 | 内容 |
 | --- | --- |
+| [README.en.md](README.en.md) | English README |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | 进程模型、启动、Home、安装管线、目录、故障恢复 |
 | [docs/MODULES.md](docs/MODULES.md) | 有效源码与测试对照表 |
 | [src/adapters/README.md](src/adapters/README.md) | DSH 协议适配 |

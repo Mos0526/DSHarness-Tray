@@ -25,6 +25,7 @@
 | --- | --- |
 | `main.js` | 托盘、主窗口、DSH 安装/更新、监督器接线、插件安装/卸载编排 |
 | `dialog.html` / `preload-dialog.js` | 主题确认框（关于、更新、错误） |
+| `README.md` / `README.en.md` | 中 / 英说明，页首互相切换 |
 | `package.json` / `package-lock.json` | 依赖与 electron-builder 配置 |
 | `LICENSE` | MIT |
 | `launch.vbs` | 用相对路径启动本地 Electron |
